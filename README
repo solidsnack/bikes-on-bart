@@ -1,0 +1,4 @@
+
+  Polls the BART API to determine if we can ride bikes on the given route at
+  the given time.
+
