@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bicycle on BART?</title>
+    <style type="text/css">
+      body {
+          background: #2e7f3a;
+          color: #fff;
+          font-family: helvetica, arial, sans-serif;
+          padding-top:50px;
+          text-align:center;
+          text-shadow: 0 -1px 0 rgba(0, 0, 0, .4)
+      }
+      .route {
+      }
+      .route.current {
+        background-image: url(/images/bicycle-road.png);
+        background-repeat: no-repeat;
+        background-position: center top;
+        padding-top: 380px;
+        text-align: center;
+      }
+      .route .status {
+        font-size: 128px;
+        margin:0;
+      }
+      .route h1 {
+        margin:0;
+      }
+      .route dl dt, .route dl dd {
+        display: inline-block;
+        padding-left: 0;
+      }
+      .route dl dt {
+        font-weight: bold;
+      }
+      .route dl dd {
+        padding-left: 10px;
+        text-indent: -40px !important;
+      }
+      .route dl dt.to, .route dl dt.at {
+        padding-left: 40px;
+      }
+    </style>
+  </head>
+  <body class="good">
+    <div class="route current">
+      <h1>Bicycle on Bart?</h1>
+      <h2 class="status">YES</h2>
+      <dl>
+        <dt class="from">From</dt>
+          <dd class="from">Civic Center</dd>
+        <dt class="to">To</dt>
+          <dd class="to">Ashby</dd>
+        <dt class="at">At</dt>
+          <dd class="at">3:36</dd>
+      </dl>
+    </div>
+  </body>
+</html>

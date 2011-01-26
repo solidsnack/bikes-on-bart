@@ -9,11 +9,11 @@ end
 
 get '/' do
   content_type 'text/html', :charset => 'utf-8'
-  File.read('./public/index.html')
+  erb :index
 end
 
 get '/api' do
   content_type 'text/html', :charset => 'utf-8'
-  File.read('./public/api.html')
+  erb :api
 end
 
