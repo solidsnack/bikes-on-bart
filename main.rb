@@ -1,10 +1,8 @@
 #!/usr/bin/env ruby
-require 'net/http'
-require 'uri'
 require 'rubygems'
 
-require 'json'
 require 'sinatra'
+require 'json'
 
 $LOAD_PATH << File.expand_path(File.dirname(__FILE__)) + '/lib'
 require 'bartron'
@@ -40,9 +38,9 @@ get '/api/:from/:to' do
     content_type 'application/json', :charset => 'utf-8'
     halt 400, JSON.dump( 'error' => 'bad station' )
   end
-  query = BARTron::Queries.recent_trips(from, to)
-  s = HANDLE.query(query)
+  params = BARTron::Queries.recent_trips(from, to)
+  xml = HANDLE.query_xml(params)
   content_type 'text/plain', :charset => 'utf-8'
-  Net::HTTP.get(URI.parse(s))
+  xml
 end
 

@@ -1,3 +1,8 @@
+require 'net/http'
+require 'uri'
+
+require 'nokogiri'
+
 module BARTron
 extend self
 
@@ -5,9 +10,17 @@ extend self
     def initialize(api_key)
       @api_key = api_key
     end
-    def query(params)
+    def query_string(params)
       q = BARTron.hash2get( params.merge('key' => @api_key) )
       "http://api.bart.gov/api/sched.aspx#{q}"
+    end
+    def query_xml(params)
+      url = self.query_string(params)
+      Net::HTTP.get(URI.parse(url))
+    end
+    def query(params)
+      xml = self.query_xml(params)
+      Nokogiri::XML(xml)
     end
   end
 
