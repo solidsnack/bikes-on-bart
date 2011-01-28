@@ -54,6 +54,6 @@ get '/api/:from/:to' do
               'bikes' => bikes }
           end
         end
-  JSON.pretty_generate(res)
+  JSON.pretty_generate( 'result' => res )
 end
 
