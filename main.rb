@@ -47,10 +47,16 @@ get '/api/:from/:to' do
             t1 = BARTron.timestamp_rewrite( leg['destTimeDate'],
                                             leg['destTimeMin'] )
             orig, dest = leg['origin'], leg['destination']
+            head = leg['trainHeadStation']
             bikes = leg['bikeflag'] == '1' ? 'yes' : 'no'
-            { 'origStation' => orig, 'origTime' => t0,
-              'destStation' => dest, 'destTime' => t1,
-              'finalStation' => leg['trainHeadStation'],
+            { 'origStationAbbrev' => orig,
+              'origStation' => BARTron::STATIONS[orig],
+              'destStationAbbrev' => dest,
+              'destStation' => BARTron::STATIONS[dest],
+              'origTime' => t0,
+              'destTime' => t1,
+              'finalStationAbbrev' => head,
+              'finalStation' => BARTron::STATIONS[head],
               'bikes' => bikes }
           end
         end
