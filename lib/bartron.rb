@@ -41,6 +41,17 @@ extend self
     end
   end
 
+  def timestamp_rewrite(bart_date, bart_time)
+    # Convert to UTC some day.
+    month, day, year = bart_date.split('/')
+    hour12, min, meridian = bart_time.split(/:| /)
+    hour24 = sprintf('%02d', case meridian
+                             when 'AM' then hour12.to_i
+                             when 'PM' then hour12.to_i + 12
+                             end )
+    "#{year}-#{month}-#{day}T#{hour24}:#{min} US/Pacific"
+  end
+
   STATIONS = { '12TH' => '12th St. Oakland City Center',
                '16TH' => '16th St. Mission (SF)',
                '19TH' => '19th St. Oakland',

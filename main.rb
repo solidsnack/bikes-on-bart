@@ -32,15 +32,28 @@ get '/api' do
 end
 
 get '/api/:from/:to' do
-  # content_type 'application/json', :charset => 'utf-8'
+  content_type 'application/json', :charset => 'utf-8'
   from, to = params[:from], params[:to]
   unless BARTron::STATIONS[from] and BARTron::STATIONS[to]
-    content_type 'application/json', :charset => 'utf-8'
     halt 400, JSON.dump( 'error' => 'bad station' )
   end
   params = BARTron::Queries.recent_trips(from, to)
-  xml = HANDLE.query_xml(params)
+  xml = HANDLE.query(params)
   content_type 'text/plain', :charset => 'utf-8'
-  xml
+  res = xml.xpath('//trip').map do |trip|
+          trip.xpath('.//leg').map do |leg|
+            t0 = BARTron.timestamp_rewrite( leg['origTimeDate'],
+                                            leg['origTimeMin'] )
+            t1 = BARTron.timestamp_rewrite( leg['destTimeDate'],
+                                            leg['destTimeMin'] )
+            orig, dest = leg['origin'], leg['destination']
+            bikes = leg['bikeflag'] == '1' ? 'yes' : 'no'
+            { 'origStation' => orig, 'origTime' => t0,
+              'destStation' => dest, 'destTime' => t1,
+              'finalStation' => leg['trainHeadStation'],
+              'bikes' => bikes }
+          end
+        end
+  JSON.pretty_generate(res)
 end
 
