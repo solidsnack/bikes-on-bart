@@ -20,6 +20,11 @@ get '/' do
   erb :index
 end
 
+get '/static/mustache.js' do
+  content_type 'application/javascript', :charset => 'utf-8'
+  File.read('./static/mustache.js')
+end
+
 
 ##  API -- raw text or XML, maybe docs.
 
