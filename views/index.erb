@@ -3,6 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <title>Bicycle on BART?</title>
+    <script src="static/mustache.js"></script>
+    <script
+      src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
+    </script>
+    <script>
+      function simple_example() {
+        $('.status').html(Mustache.to_html('<em>{{header}}</em>',{header: 7}))
+      }
+    </script>
     <style type="text/css">
       body {
           background: #2e7f3a;
