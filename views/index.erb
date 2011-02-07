@@ -11,60 +11,115 @@
       function simple_example() {
         $('.status').html(Mustache.to_html('<em>{{header}}</em>',{header: 7}))
       }
+      var $json = {};
+      var $templates = {};
+      function render_trip(json) {
+        var template = $templates[json['bikes']];
+        var html = Mustache.to_html(template, json);
+        $('.routes').append('<div class="trip" >'+html+'</div>');
+      }
+      function render_route(json) {
+        $.each(json, function (i) { render_trip(json[i]) })
+      }
+      function receive(json) {
+        $json = json.result;
+        $.each($json, function (i) { render_route($json[i]) });
+      }
+      function load_routes() {
+        $templates = { 'yes' : $('.trip.template.yes').html(),
+                       'no'  : $('.trip.template.no').html() }
+        $.ajax({ dataType: 'json',
+                 success: receive,
+                 url: '/api/CIVC/ASHB' });
+      }
     </script>
     <style type="text/css">
       body {
-          background: #2e7f3a;
+          /* background: #2e7f3a; */
+          background: #aaaaaa;
           color: #fff;
           font-family: helvetica, arial, sans-serif;
           padding-top:50px;
           text-align:center;
           text-shadow: 0 -1px 0 rgba(0, 0, 0, .4)
       }
-      .route {
+      .trip {
       }
-      .route.current {
+      .trip.yes {
+        background: #2e7f3a;
+      }
+      .trip.no {
+        background: red;
+      }
+      .trip.current {
         background-image: url(/images/bicycle-road.png);
         background-repeat: no-repeat;
         background-position: center top;
         padding-top: 380px;
         text-align: center;
       }
-      .route .status {
+      .trip .status {
         font-size: 128px;
         margin:0;
       }
-      .route h1 {
+      .trip h1 {
         margin:0;
       }
-      .route dl dt, .route dl dd {
+      .trip dl dt, .trip dl dd {
         display: inline-block;
         padding-left: 0;
       }
-      .route dl dt {
+      .trip dl dt {
         font-weight: bold;
       }
-      .route dl dd {
+      .trip dl dd {
         padding-left: 10px;
         text-indent: -40px !important;
       }
-      .route dl dt.to, .route dl dt.at {
+      .trip dl dt.to, .trip dl dt.at {
         padding-left: 40px;
       }
     </style>
   </head>
-  <body class="good">
-    <div class="route current">
-      <h1>Bicycle on Bart?</h1>
-      <h2 class="status">YES</h2>
-      <dl>
-        <dt class="from">From</dt>
-          <dd class="from">Civic Center</dd>
-        <dt class="to">To</dt>
-          <dd class="to">Ashby</dd>
-        <dt class="at">At</dt>
-          <dd class="at">3:36</dd>
-      </dl>
+  <body class="good" onLoad="load_routes()">
+    <div class="routes">
+      <!-- Filled in by Mustache. -->
+    </div>
+    <div class="templates">
+      <div class="template route current">
+        <h1>Bicycle on Bart?</h1>
+        <h2 class="status">YES</h2>
+        <dl>
+          <dt class="from">From</dt>
+            <dd class="from">Civic Center</dd>
+          <dt class="to">To</dt>
+            <dd class="to">Ashby</dd>
+          <dt class="at">At</dt>
+            <dd class="at">3:36</dd>
+        </dl>
+      </div>
+      <div class="template trip yes">
+        <h2 class="status">YES</h2>
+        <dl>
+          <dt class="from">From</dt>
+            <dd class="from">{{origStation}}</dd>
+          <dt class="to">To</dt>
+            <dd class="to">{{destStation}}</dd>
+          <dt class="at">At</dt>
+            <dd class="at">{{origTime}}</dd>
+        </dl>
+      </div>
+      <div class="template trip no">
+        <h2 class="status">NO</h2>
+        <dl>
+          <dt class="from">From</dt>
+            <dd class="from">{{origStation}}</dd>
+          <dt class="to">To</dt>
+            <dd class="to">{{destStation}}</dd>
+          <dt class="at">At</dt>
+            <dd class="at">{{origTime}}</dd>
+        </dl>
+      </div>
     </div>
   </body>
 </html>
