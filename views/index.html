@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bicycle on BART?</title>
+    <style type="text/css">
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #aaaaaa;
+        color: #fff;
+        font-family: helvetica, arial, sans-serif;
+        padding-top:50px;
+        text-align:center;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, .4)
+      }
+      .route {
+        width: 100%;
+      }
+      .route.current {
+        background-image: url(../public/images/bicycle-road.png);
+        background-repeat: no-repeat;
+        background-position: center top;
+        padding-top: 380px;
+        text-align: center;
+      }
+      .trip {
+        display: inline-block;
+      }
+      .trip.yes {
+        background: #2e7f3a;
+      }
+      .trip.no {
+        background: red;
+      }
+      .trip .status {
+        font-size: 128px;
+      }
+      .trip dl {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      .trip dl dt, .trip dl dd {
+        display: inline-block;
+      }
+      .trip dl dt {
+        font-weight: bold;
+      }
+      .trip dl dd {
+        padding-left: 10px;
+        /* text-indent: -40px !important; */
+      }
+      .trip dl dt.to, .trip dl dt.at {
+        padding-left: 40px;
+      }
+    </style>
+  </head>
+  <body class="good">
+    <div class="routes">
+      <div class="route">
+        <div class="trip yes">
+          <h2 class="status">YES</h2>
+          <dl>
+            <dt class="from">From</dt>
+              <dd class="from">{{origStation}}</dd>
+            <dt class="to">To</dt>
+              <dd class="to">{{destStation}}</dd>
+            <dt class="at">At</dt>
+              <dd class="at">{{origTime}}</dd>
+          </dl>
+        </div>
+        <div class="trip no">
+          <h2 class="status">NO</h2>
+          <dl>
+            <dt class="from">From</dt>
+              <dd class="from">{{origStation}}</dd>
+            <dt class="to">To</dt>
+              <dd class="to">{{destStation}}</dd>
+            <dt class="at">At</dt>
+              <dd class="at">{{origTime}}</dd>
+          </dl>
+        </div>
+      </div>
+      <div class="route current">
+        <div class="trip yes">
+          <h2 class="status">YES</h2>
+          <dl>
+            <dt class="from">From</dt>
+              <dd class="from">{{origStation}}</dd>
+            <dt class="to">To</dt>
+              <dd class="to">{{destStation}}</dd>
+            <dt class="at">At</dt>
+              <dd class="at">{{origTime}}</dd>
+          </dl>
+        </div>
+        <div class="trip no">
+          <h2 class="status">NO</h2>
+          <dl>
+            <dt class="from">From</dt>
+              <dd class="from">{{origStation}}</dd>
+            <dt class="to">To</dt>
+              <dd class="to">{{destStation}}</dd>
+            <dt class="at">At</dt>
+              <dd class="at">{{origTime}}</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
