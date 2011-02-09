@@ -17,14 +17,13 @@ end
 
 get '/' do
   content_type 'text/html', :charset => 'utf-8'
-  erb :index
+  File.read('./public/index.html')
 end
 
-get '/static/mustache.js' do
-  content_type 'application/javascript', :charset => 'utf-8'
-  File.read('./static/mustache.js')
+get '/images/bicycle-road.png' do
+  content_type 'image/png'
+  File.read('./public/images/bicycle-road.png')
 end
-
 
 ##  API -- raw text or XML, maybe docs.
 
