@@ -14,13 +14,13 @@ extend self
       q = BARTron.hash2get( params.merge('key' => @api_key) )
       "http://api.bart.gov/api/sched.aspx#{q}"
     end
-    def query_xml(params)
+    def query_text(params)
       url = self.query_string(params)
       Net::HTTP.get(URI.parse(url))
     end
-    def query(params)
-      xml = self.query_xml(params)
-      Nokogiri::XML(xml)
+    def query_xml(params)
+      text = self.query_text(params)
+      Nokogiri::XML(text)
     end
   end
 
@@ -30,6 +30,41 @@ extend self
       { 'cmd' => 'depart', 'b' => '4', 'a' => '4', 'l' => '1',
         'orig' => from,
         'dest' => to }
+    end
+  end
+
+  class Q
+    def initialize(qball)
+      @qball = qball
+    end
+    def recent_trips(from, to)
+      unless BARTron::STATIONS[from] and BARTron::STATIONS[to]
+        { 'error' => 'bad station' }
+      else
+        params = BARTron::Queries.recent_trips(from, to)
+        xml = @qball.query_xml(params)
+        res = xml.xpath('//trip').map do |trip|
+                trip.xpath('.//leg').map do |leg|
+                  t0 = BARTron.timestamp_rewrite( leg['origTimeDate'],
+                                                  leg['origTimeMin'] )
+                  t1 = BARTron.timestamp_rewrite( leg['destTimeDate'],
+                                                  leg['destTimeMin'] )
+                  orig, dest = leg['origin'], leg['destination']
+                  head = leg['trainHeadStation']
+                  bikes = leg['bikeflag'] == '1' ? 'yes' : 'no'
+                  { 'origStationAbbrev' => orig,
+                    'origStation' => BARTron::STATIONS[orig],
+                    'destStationAbbrev' => dest,
+                    'destStation' => BARTron::STATIONS[dest],
+                    'origTime' => t0,
+                    'destTime' => t1,
+                    'finalStationAbbrev' => head,
+                    'finalStation' => BARTron::STATIONS[head],
+                    'bikes' => bikes }
+                end
+              end
+        { 'result' => res }
+      end
     end
   end
 
